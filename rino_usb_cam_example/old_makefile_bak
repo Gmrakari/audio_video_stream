@@ -1,0 +1,69 @@
+
+
+RINO_SDK_TYPE=
+TOOLCHAIN_PATH := 
+ifeq ($(CROSS),) 
+    CC := $(TOOLCHAIN_PATH)gcc
+    CXX := $(TOOLCHAIN_PATH)g++
+	AR := $(TOOLCHAIN_PATH)ar cr
+	LD := $(TOOLCHAIN_PATH)ld
+	STRIP :=$(TOOLCHAIN_PATH)strip
+else
+    CC := $(CROSS)gcc
+    CXX := $(CROSS)g++
+	AR := $(CROSS)ar cr
+	LD := $(CROSS)ld
+	STRIP :=$(CROSS)strip
+endif
+
+
+
+RM := rm -rf
+CP := cp -rf
+
+CSOURCE:=$(shell find ./ -name "*.c")
+HSOURCE:=$(shell find ./ -name "*.h")
+OBJECTS:=$(patsubst %.c, %.o, $(CSOURCE))
+
+DEF:= .dep
+
+INC += -I./Inc/
+CFLAGS += -Wall -g -O0 $(INC) 
+
+
+LDLIBS := -lpthread
+
+LINK_LIB += -L ./Lib/
+LDLIBS += ./Lib/librinolink.a
+LDLIBS += ./Lib/libagora-rtc-sdk.a
+LDLIBS += ./Lib/libmbedtls.a 
+LDLIBS += ./Lib/libcjson.a
+ifneq ($(SDK_LIB_DIR_FDK_AAC),)
+CFLAGS += -DRINO_FDK_AAC=1 
+LDLIBS += ./Lib/libfdk-aac.a
+endif
+
+CFLAGS 		    += -DRINO_P2P_WEBRTC=1 
+# CFLAGS += -muclibc
+CFLAGS += -lm -lc -ldl -lpthread -lrt
+CFLAGS += -lstdc++
+
+TARGETEXE=RinoLink_App
+
+%.o : %.c
+	$(CC) -c $< $(CFLAGS)
+
+all : $(TARGETEXE)
+
+clean:	
+	$(RM) $(OBJECTS) $(TARGETLIB)
+	rm -fr $(PROJECTTOPDIR)/Lib/$(TARGETLIB)
+	rm -fr $(PROJECTTOPDIR)/Inc/$(TARGET_H)
+
+ifneq ($(TARGETEXE),)
+$(TARGETEXE) : $(OBJECTS) $(HSOURCE) 
+	$(CC) -o $@ $^  $(LINK_LIB) $(LDLIBS) $(CFLAGS)
+
+clean:
+	$(RM) $(OBJECTS) $(TARGETEXE)
+endif	
