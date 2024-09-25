@@ -7,6 +7,15 @@ sudo apt-get install libavcodec-dev libavformat-dev libavutil-dev libswscale-dev
 
 FFmpeg(libavdevice, libavformat, libavcodec, libavutil, libswscale)
 
+libavutil                         常用的工具函数，比如数据结构和数学函数
+libavcodec                        负责音视频编解码，FFmpeg核心库
+libavformat                       处理多媒体容器格式
+libavdevice                       提供音视频输入输出设备的支持
+libavfilter                       音视频滤镜功能
+libswscale (software scale)       处理图像缩放和像素格式转换
+libswresample (software resample) 处理音频重采样和格式转化
+libpostproc                       提供后处理功能，用于视频后处理
+
 usb camera 转 h264流程
 1. 打开设备
   a. 注册所有的USB摄像头设备 
