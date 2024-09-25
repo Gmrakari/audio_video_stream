@@ -1,0 +1,34 @@
+# ignore .vscode
+.vscode/
+
+# gcc compile executable file
+a.out
+
+# ignore build directory / Gradle
+**/build/*
+!**/build/.gitkeep
+
+# ignore bin directory
+**bin/*
+!**bin/.gitkeep
+
+# ignore debug directroy
+debug
+
+# ignore CLion Cmake Debug directory
+cmake-build-debug
+
+#ignore Bin directory
+bin
+
+#ignore lib directory
+lib
+
+.idea/
+
+*.o
+
+*.a
+
+*.so
+
